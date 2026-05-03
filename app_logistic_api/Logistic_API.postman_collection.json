@@ -1,0 +1,809 @@
+{
+	"info": {
+		"_postman_id": "b18b45a0-5232-47d0-a0de-4baea269d0f3",
+		"name": "Logistic API",
+		"description": "Colección para probar los endpoints de la API de Logística (Terrestre y Marítima).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth & Users",
+			"item": [
+				{
+					"name": "1. Register User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@test.com\",\n    \"password\": \"password123\",\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"document_number\": \"987654321\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/register/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"register",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. Login (Get Token)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.data && jsonData.data.access) {",
+									"    pm.collectionVariables.set(\"access_token\", jsonData.data.access);",
+									"}",
+									"if (jsonData.access) {",
+									"    pm.collectionVariables.set(\"access_token\", jsonData.access);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@admin.com\",\n    \"password\": \"admin123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/login/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"login",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. Get Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users/profile/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"profile",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Logistics",
+			"item": [
+				{
+					"name": "Clients",
+					"item": [
+						{
+							"name": "Get Clients",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/logistics/clients/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"logistics",
+										"clients",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Client",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Juan\",\n    \"last_name\": \"Perez\",\n    \"email\": \"juan.perez@example.com\",\n    \"phone\": \"3001234567\",\n    \"address\": \"Calle Falsa 123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/logistics/clients/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"logistics",
+										"clients",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Client",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Juan Modificado\",\n    \"is_active\": true\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/logistics/clients/1/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"logistics",
+										"clients",
+										"1",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Products",
+					"item": [
+						{
+							"name": "Get Products",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/logistics/products/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"logistics",
+										"products",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Product",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Televisor 55 Pulgadas\",\n    \"description\": \"TV OLED 4K\",\n    \"stock\": 50,\n    \"is_active\": true,\n    \"price\": \"500.00\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/logistics/products/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"logistics",
+										"products",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Warehouses",
+					"item": [
+						{
+							"name": "Get Warehouses",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/logistics/warehouses/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"logistics",
+										"warehouses",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Warehouse",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Bodega Central\",\n    \"location\": \"Bogotá, Zona Industrial\",\n    \"capacity\": 1000\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/logistics/warehouses/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"logistics",
+										"warehouses",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Seaports",
+					"item": [
+						{
+							"name": "Get Seaports",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/logistics/seaports/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"logistics",
+										"seaports",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Seaport",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Puerto de Buenaventura\",\n    \"location\": \"Valle del Cauca, Colombia\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/logistics/seaports/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"logistics",
+										"seaports",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Shipments",
+					"item": [
+						{
+							"name": "Get All Shipments",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/logistics/shipments/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"logistics",
+										"shipments",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Shipment Status",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"IN_TRANSIT\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/logistics/shipments/1/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"logistics",
+										"shipments",
+										"1",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Complete Shipment",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/logistics/shipments/1/complete/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"logistics",
+										"shipments",
+										"1",
+										"complete",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Land Shipments",
+					"item": [
+						{
+							"name": "Get Land Shipments",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/logistics/land-shipments/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"logistics",
+										"land-shipments",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Land Shipment",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"client\": 1,\n    \"product\": 1,\n    \"product_quantity\": 15,\n    \"delivery_warehouse\": 1,\n    \"shipping_price\": \"100.00\",\n    \"tracking_number\": \"ABC1234567\",\n    \"vehicle_plate\": \"XYZ987\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/logistics/land-shipments/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"logistics",
+										"land-shipments",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Maritime Shipments",
+					"item": [
+						{
+							"name": "Get Maritime Shipments",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/logistics/maritime-shipments/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"logistics",
+										"maritime-shipments",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Maritime Shipment",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"client\": 1,\n    \"product\": 1,\n    \"product_quantity\": 15,\n    \"delivery_port\": 1,\n    \"shipping_price\": \"100.00\",\n    \"tracking_number\": \"MAR9876543\",\n    \"fleet_number\": \"SEA1234F\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/logistics/maritime-shipments/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"logistics",
+										"maritime-shipments",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Validation Examples (Fails)",
+					"item": [
+						{
+							"name": "Fail - Invalid Tracking Number (Length)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"client\": 1,\n    \"product\": 1,\n    \"product_quantity\": 15,\n    \"delivery_warehouse\": 1,\n    \"shipping_price\": \"100.00\",\n    \"tracking_number\": \"123\",\n    \"vehicle_plate\": \"XYZ987\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/logistics/land-shipments/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"logistics",
+										"land-shipments",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Fail - Invalid Fleet Number (Format)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"client\": 1,\n    \"product\": 1,\n    \"product_quantity\": 15,\n    \"delivery_port\": 1,\n    \"shipping_price\": \"100.00\",\n    \"tracking_number\": \"CD98765432\",\n    \"fleet_number\": \"INVALID123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/logistics/maritime-shipments/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"logistics",
+										"maritime-shipments",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000"
+		},
+		{
+			"key": "access_token",
+			"value": ""
+		}
+	]
+}
