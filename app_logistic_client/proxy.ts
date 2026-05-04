@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const token = request.cookies.get('logistic_access_token')?.value;
   const { pathname } = request.nextUrl;
 
@@ -29,7 +29,7 @@ export function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-// middleware a todas las rutas excepto las internas de Next.js
+// proxy a todas las rutas excepto las internas de Next.js
 export const config = {
   matcher: [
     /*
