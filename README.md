@@ -82,7 +82,12 @@ El proyecto está configurado para ejecutarse fácilmente utilizando Docker y Do
 3.  **Acceso:**
     -   **Frontend**: [http://localhost:3000](http://localhost:3000)
     -   **API**: [http://localhost:8000/api](http://localhost:8000/api)
+    -   **Base de Datos (SQL)**: [full_db_schema.sql](file:///d:/Dev_Tools/SIATA_TEST_CASE/full_db_schema.sql)
+    -   **Diagrama Entidad-Relación**: [DIAGRAMA-ER.png](file:///d:/Dev_Tools/SIATA_TEST_CASE/DIAGRAMA-ER.png)
     -   **Documentación (Postman)**: Puedes importar la colección [Logistic_API.postman_collection.json](file:///d:/Dev_Tools/SIATA_TEST_CASE/app_logistic_api/Logistic_API.postman_collection.json) en Postman para probar los endpoints.
+
+### Diagrama ER
+![Diagrama Entidad Relación](file:///d:/Dev_Tools/SIATA_TEST_CASE/DIAGRAMA-ER.png)
 
 
 ---
