@@ -8,29 +8,16 @@ export function middleware(request: NextRequest) {
   const isAuthPage = pathname.startsWith("/auth");
 
   if (pathname === "/") {
-    const url = request.nextUrl.clone();
-
-    if (token) {
-      url.pathname = "/client/shipments";
-    } else {
-      url.pathname = "/auth/login";
-    }
-
-    return NextResponse.redirect(url);
+    const redirectUrl = token ? "/client/shipments" : "/auth/login";
+    return NextResponse.redirect(new URL(redirectUrl, request.url));
   }
 
   if (!token && !isAuthPage) {
-    if (pathname.includes(".")) return NextResponse.next();
-
-    const url = request.nextUrl.clone();
-    url.pathname = "/auth/login";
-    return NextResponse.redirect(url);
+    return NextResponse.redirect(new URL("/auth/login", request.url));
   }
 
   if (token && isAuthPage) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/client/shipments";
-    return NextResponse.redirect(url);
+    return NextResponse.redirect(new URL("/client/shipments", request.url));
   }
 
   return NextResponse.next();
@@ -38,6 +25,11 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico).*)",
+    /*
+     * Ignora las rutas de la API, archivos estáticos de Next.js,
+     * optimización de imágenes, favicon, y de forma segura 
+     * cualquier archivo con extensión conocida (imágenes, fuentes, etc.)
+     */
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|css|js|woff|woff2)$).*)",
   ],
 };

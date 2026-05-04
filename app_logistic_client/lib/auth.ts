@@ -7,6 +7,7 @@ export const setToken = (token: string) => {
     expires: 1,
     path: "/",
     sameSite: "lax",
+    // Secure for producction
     secure: true,
   });
 };
