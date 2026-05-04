@@ -74,21 +74,26 @@ El proyecto está configurado para ejecutarse fácilmente utilizando Docker y Do
 
 1.  **Asegúrate de estar en la raíz del proyecto.**
 2.  **Ejecutar el comando:**
+
     ```bash
     docker-compose up --build
     ```
-    *Este comando levantará la base de datos (PostgreSQL), el backend (API) y el frontend (Client) automáticamente.*
+    *Este comando levantará la base de datos (PostgreSQL), el backend (API) y el frontend (Client) automáticamente localmente.
 
-3.  **Acceso:**
-    -   **Frontend**: [http://localhost:3000](http://localhost:3000)
-    -   **API**: [http://localhost:8000/api](http://localhost:8000/api)
-    -   **Base de Datos (SQL)**: [full_db_schema.sql](./full_db_schema.sql)
-    -   **Diagrama Entidad-Relación**: [DIAGRAMA-ER.png](./DIAGRAMA-ER.png)
-    -   **Documentación (Postman)**: Puedes importar la colección [Logistic_API.postman_collection.json](./app_logistic_api/Logistic_API.postman_collection.json) en Postman para probar los endpoints.
+3.  **Despliegue en la Nube**:
+    La solución se encuentra actualmente desplegada en **Vercel** para una demostración rápida.
+
+4.  **Acceso:**
+    - **Frontend (Producción)**: [https://siata-test-case-client.vercel.app/](https://siata-test-case-client.vercel.app/)
+    - **API (Producción)**: [https://siata-test-case-api.vercel.app/api](https://siata-test-case-api.vercel.app/api)
+    - **Local**: [http://localhost:3000](http://localhost:3000)
+    - **Base de Datos (SQL)**: [full_db_schema.sql](./full_db_schema.sql)
+    - **Diagrama Entidad-Relación**: [DIAGRAMA-ER.png](./DIAGRAMA-ER.png)
+    - **Documentación (Postman)**: Puedes importar la colección [Logistic_API.postman_collection.json](./app_logistic_api/Logistic_API.postman_collection.json) en Postman para probar los endpoints.
 
 ### Diagrama ER
-![Diagrama Entidad Relación](./DIAGRAMA-ER.png)
 
+![Diagrama Entidad Relación](./DIAGRAMA-ER.png)
 
 ---
 
@@ -97,12 +102,14 @@ El proyecto está configurado para ejecutarse fácilmente utilizando Docker y Do
 Para el desarrollo de esta solución, se priorizó la escalabilidad, buena integridad de datos y escalabilidad para futuras implementaciones.
 
 ### Justificación de Tecnologías
+
 - **Django REST Framework (DRF)**: Se eligió por su madurez y simplicidad para el manejo de relaciones y modelos de datos; la facilidad de implementar características como autenticación, migraciones de datos, paginación y crud completo.
 - **Next.js 15+**: Se seleccionó por su simplicidad y eficiencia en el manejo de rutas y por su optimización.
 - **PostgreSQL**: Decidí implementar un modelo de base de datos relacional para garantizar una buena integridad de datos y escalabilidad para una futura implementación.
 - **Docker**: Se implementó para asegurar que el sistema funcione exactamente igual en cualquier máquina, orquestando la base de datos, el backend y el frontend con un solo comando.
 
 ### Patrones de Diseño y Buenas Prácticas
+
 - **Polimorfismo en modelos de envíos**: Se empleó herencia de modelos para los envíos. Esto permite que `LandShipment` y `MaritimeShipment` compartan una base común (`Shipment`) pero mantengan sus campos específicos según el caso de uso.
 - **Borrado Lógico (Soft Delete)**: En lugar de eliminar registros, se utiliza el campo `is_active`. Esto es una buena práctica en sistemas logísticos para mantener la trazabilidad histórica de los datos en caso de querer eliminar información a futuro (lo más apropiado podría ser implementar SnapShots para mantener un historial mas detallado pero por facilidad se optó por el borrado lógico).
 - **Gestión Global de Estado**: Se implementó un `UserProvider`, hooks de autenticación y middlewares para manejar el estado global de la aplicación.
@@ -114,12 +121,14 @@ Para el desarrollo de esta solución, se priorizó la escalabilidad, buena integ
 ## Características Principales
 
 ### Gestión de Catálogos (CRUD)
+
 - **Clientes**: Registro y administración de clientes.
 - **Productos**: Gestión de inventario de productos.
 - **Puertos y Bodegas**: Administración de puntos de origen y destino.
 - **Estado Activo/Inactivo**: Sistema de borrado lógico mediante `is_active`.
 
 ### Módulo de Envíos
+
 - **Envíos Terrestres y Marítimos**: Formulario dinámico que adapta campos según el tipo de transporte.
 - **Validaciones Estrictas**:
   - Número de Guía (10 caracteres alfanuméricos).
@@ -128,6 +137,7 @@ Para el desarrollo de esta solución, se priorizó la escalabilidad, buena integ
 - **Gestión de Estados**: Flujo completo desde Pendiente hasta Entregado/Cancelado.
 
 ### Seguridad y Experiencia de Usuario
+
 - **Autenticación JWT**: Protección de rutas y persistencia de sesión.
 - **User Provider**: Contexto global para mostrar el perfil del usuario en toda la app.
 - **Validación en Tiempo Real**: Mensajes de error por campo y transformación automática a MAYÚSCULAS.
@@ -135,7 +145,7 @@ Para el desarrollo de esta solución, se priorizó la escalabilidad, buena integ
 
 ---
 
-
 ## Autor
+
 John Manuel Echeverry Hernandez
 Desarrollado para el caso técnico de ** EAFIT - SIATA**.
