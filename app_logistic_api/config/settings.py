@@ -106,7 +106,6 @@ CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS', default=[])
 CORS_ALLOW_ALL_ORIGINS = DEBUG
 
 REST_FRAMEWORK = {
-    # Dejamos solo tu renderer personalizado por defecto para producción
     'DEFAULT_RENDERER_CLASSES': [
         'core.renderers.CustomJSONRenderer',
     ],
