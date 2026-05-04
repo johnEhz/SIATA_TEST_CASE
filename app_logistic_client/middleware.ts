@@ -8,20 +8,29 @@ export function middleware(request: NextRequest) {
   const isAuthPage = pathname.startsWith("/auth");
 
   if (pathname === "/") {
+    const url = request.nextUrl.clone();
+
     if (token) {
-      return NextResponse.redirect(new URL("/client/shipments", request.url));
+      url.pathname = "/client/shipments";
     } else {
-      return NextResponse.redirect(new URL("/auth/login", request.url));
+      url.pathname = "/auth/login";
     }
+
+    return NextResponse.redirect(url);
   }
 
   if (!token && !isAuthPage) {
     if (pathname.includes(".")) return NextResponse.next();
-    return NextResponse.redirect(new URL("/auth/login", request.url));
+
+    const url = request.nextUrl.clone();
+    url.pathname = "/auth/login";
+    return NextResponse.redirect(url);
   }
 
   if (token && isAuthPage) {
-    return NextResponse.redirect(new URL("/client/shipments", request.url));
+    const url = request.nextUrl.clone();
+    url.pathname = "/client/shipments";
+    return NextResponse.redirect(url);
   }
 
   return NextResponse.next();

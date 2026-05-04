@@ -3,7 +3,12 @@ import Cookies from 'js-cookie';
 const TOKEN_KEY = 'logistic_access_token';
 
 export const setToken = (token: string) => {
-  Cookies.set(TOKEN_KEY, token, { expires: 1 });
+  Cookies.set(TOKEN_KEY, token, {
+    expires: 1,
+    path: "/",
+    sameSite: "lax",
+    secure: true,
+  });
 };
 
 export const getToken = () => {
